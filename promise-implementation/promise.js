@@ -1,5 +1,4 @@
 // possible states
-
 const PENDING = 'PENDING';
 const REJECTED = 'REJECTED';
 const FULFILLED = 'FULFILLED';
@@ -15,6 +14,29 @@ const APromise{
 
         // call the executor
         doResolve(this, executor);
+
+        /*
+            To observe changes in the state of the promise (and the fulfillment value or rejection reason)
+            we use the then method, the method receives 2 parameters,
+            an onFulfilled function and
+            an onRejected function,
+            the rules to invoke these functions are the following:
+
+            when the promise is in a FULFILLED state the onFulfilled function will
+            be called with the promise's fulfillment value e.g. onFulfilled(value)
+
+            when the promise is in a REJECTED state the onRejected function will
+            be called with the promise's rejection reason e.g. onRejected(reason)
+        */
+
+        then(onFulfilled, onRejected) {
+            handleResolved(this, onFulfilled, onRejected);
+        }
+    }
+
+    function handleResolved(promise, onFulfilled, onRejected) {
+        const func = promise.state === FULFILLED ? onFulfilled : onRejected
+        func(promise.value);
     }
 
     // fullfill with a value
@@ -26,7 +48,7 @@ const APromise{
     // reject with a reason
     function reject(promise, reason) {
         promise.state = REJECTED;
-        promise.reason =
+        promise.value = reason;
     }
 
     // creates the fulfill/reject functions that are arguments of the executor
