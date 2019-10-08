@@ -1,3 +1,14 @@
+/*
+
+    A tutorial followed from the link 'https://www.mauriciopoppe.com/notes/computer-science/computation/promises/',
+
+    Improvement includes:-
+        1. Methods, all and race
+        2. Async stack traces
+
+*/
+
+
 // possible states
 const PENDING = 'PENDING';
 const REJECTED = 'REJECTED';
@@ -53,14 +64,29 @@ const APromise{
 
     // creates the fulfill/reject functions that are arguments of the executor
     function doResolve(promise, executor) {
+        // Transitions are supposed to be one way, once the promise enter into FULFILLED or REJECTED state,
+        // it should not change it's state
+        let called = false;
         function wrapFullfill(value) {
+            // Ensure it's not getting called twice or called after calling wrapReject
+            if(called) return;
+            called = true;
             fullfill(promise, value);
         }
 
         function wrapReject(reason) {
+            // Ensure it's not getting called twice or called after calling wrapFullfill
+            if(called) return;
+            called = true;
             reject(promise, reason);
         }
-        executor(wrapFullfill, wrapReject);
+        // If the execution of executor fails, the promise should move into REJECTED state,
+        // try catch black ensure that wrapReject is called in case of exception
+        try {
+            executor(wrapFullfill, wrapReject);
+        } catch(ex) {
+            wrapReject(ex);
+        }
     }
 
 }
