@@ -1,0 +1,22 @@
+{
+  "name": "concepts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "async.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sant470/node-concepts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sant470/node-concepts/issues"
+  },
+  "homepage": "https://github.com/Sant470/node-concepts#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
